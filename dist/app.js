@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const metadata_keys_1 = require("./utils/metadata.keys");
 class App {
     constructor(controllers, port) {
         this.port = port;
@@ -33,7 +34,7 @@ class App {
     }
     initializeControllers(controllers) {
         controllers.forEach((controller) => {
-            this.expressApp.use(controller.path, controller.router);
+            console.log(Reflect.getMetadata(metadata_keys_1.MetadataKeys.BASE_PATH, controller));
         });
     }
     listen() {

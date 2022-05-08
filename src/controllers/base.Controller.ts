@@ -1,15 +1,16 @@
 import { NextFunction, Router } from "express";
-import HttpCustomError from "../util/http-custom-error";
-import IErrorData from "../util/error-data.interface";
+import HttpCustomError from "../utils/http-custom-error";
+import IErrorData from "../utils/error-data.interface";
 
 export default abstract class BaseController {
   public router: Router;
 
-  constructor(public path: string) {
+  constructor() {
     this.router = Router();
     this.initializeRoutes();
   }
 
+  // public abstract getInstance(): BaseController;
   protected abstract initializeRoutes(): void;
 
   protected failResponse(
