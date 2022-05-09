@@ -6,7 +6,6 @@ import express, {
   Handler,
 } from "express";
 import BaseController from "./controllers/base.Controller";
-import FormsController from "./controllers/forms.controller";
 import { IRouter } from "./utils/handlers.decorator";
 import HttpCustomError from "./utils/http-custom-error";
 import { MetadataKeys } from "./utils/metadata.keys";
@@ -53,27 +52,29 @@ export default class App {
   }
 
   initializeControllers(controllers: BaseController[]) {
-    console.log(controllers);
+    const info: Array<{ api: string; handler: string }> = [];
     controllers.forEach((controller) => {
-      console.log(controller);
-      // const controllerInstance: { [handleName: string]: Handler } = new FormsController();
+      const controllerInstance: { [handleName: string]: Handler } =
+        controller as any;
+
+      console.log(controllerInstance);
 
       const basePath: string = Reflect.getMetadata(
         MetadataKeys.BASE_PATH,
         controller.constructor
       );
 
-      // const routers: IRouter[] = Reflect.getMetadata(
-      //   MetadataKeys.ROUTERS,
-      //   controller
-      // );
+      const routers: IRouter[] = Reflect.getMetadata(
+        MetadataKeys.ROUTERS,
+        controller.constructor
+      );
 
       // const router = express.Router();
       // routers.forEach(({ method, path, handlerName }) => {
       //   router[method](path);
       // });
 
-      // console.log(basePath, routers);
+      console.log(basePath, routers);
     });
   }
 
