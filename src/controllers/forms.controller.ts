@@ -3,6 +3,7 @@ import HttpCustomError from "../utils/http-custom-error";
 import BaseController from "./base.Controller";
 import Controller from "../utils/controller.decorator";
 import { Get, Post } from "../utils/handlers.decorator";
+import { Middleware } from "../utils/middleware.decorator";
 import "reflect-metadata";
 @Controller("/forms")
 export default class FormsController extends BaseController {
@@ -22,6 +23,7 @@ export default class FormsController extends BaseController {
   }
 
   @Get("/")
+  @Middleware
   getAllForms(request: Request, response: Response, next: NextFunction) {
     try {
       return response.json("ok");
