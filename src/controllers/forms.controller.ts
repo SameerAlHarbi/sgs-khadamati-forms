@@ -34,7 +34,7 @@ export default class FormsController extends BaseController {
   @Get("/2")
   getAllForms2(request: Request, response: Response, next: NextFunction) {
     try {
-      return response.json("ok");
+      return response.json("ok2");
     } catch (error) {
       (error as HttpCustomError).httpStatusCode = 400;
       return next(error);

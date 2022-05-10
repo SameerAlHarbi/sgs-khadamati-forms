@@ -57,8 +57,6 @@ export default class App {
       const controllerInstance: { [handleName: string]: Handler } =
         controller as any;
 
-      console.log(controllerInstance);
-
       const basePath: string = Reflect.getMetadata(
         MetadataKeys.BASE_PATH,
         controller.constructor
@@ -69,13 +67,24 @@ export default class App {
         controller.constructor
       );
 
-      // const router = express.Router();
-      // routers.forEach(({ method, path, handlerName }) => {
-      //   router[method](path);
-      // });
+      console.table(routers);
 
-      console.log(basePath, routers);
+      routers.forEach(({ method, path, handlerName }) => {
+        controller.router[method](
+          path,
+          controllerInstance[String(handlerName)].bind(controllerInstance)
+        );
+
+        info.push({
+          api: `${method.toLocaleUpperCase()} ${basePath + path}`,
+          handler: `${controller.constructor.name}.${String(handlerName)}`,
+        });
+      });
+
+      this.expressApp.use(basePath, controller.router);
     });
+
+    console.table(info);
   }
 
   public listen() {
