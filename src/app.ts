@@ -4,6 +4,7 @@ import express, {
   Response,
   NextFunction,
   Handler,
+  RequestHandler,
 } from "express";
 import BaseController from "./controllers/base.Controller";
 import { IRouter } from "./utils/handlers.decorator";
@@ -62,6 +63,13 @@ export default class App {
         controller.constructor
       );
 
+      const middlewares: RequestHandler = Reflect.getMetadata(
+        MetadataKeys.MIDDLEWARES,
+        controller.constructor
+      );
+
+      console.log(middlewares);
+
       const routers: IRouter[] = Reflect.getMetadata(
         MetadataKeys.ROUTERS,
         controller.constructor
@@ -81,7 +89,14 @@ export default class App {
         });
       });
 
-      this.expressApp.use(basePath, controller.router);
+      this.expressApp.use(
+        basePath,
+        middlewares ??
+          function (req, res, next) {
+            return next();
+          },
+        controller.router
+      );
     });
 
     console.table(info);

@@ -5,7 +5,17 @@ import Controller from "../utils/controller.decorator";
 import { Get, Post } from "../utils/handlers.decorator";
 import { Middleware } from "../utils/middleware.decorator";
 import "reflect-metadata";
-@Controller("/forms")
+@Controller(
+  "/forms",
+  (req, res, next) => {
+    console.log("middleware works");
+    return next();
+  },
+  (req, res, next) => {
+    console.log("middleware2 works");
+    return next();
+  }
+)
 export default class FormsController extends BaseController {
   public testText: string | undefined;
 
@@ -23,7 +33,6 @@ export default class FormsController extends BaseController {
   }
 
   @Get("/")
-  @Middleware
   getAllForms(request: Request, response: Response, next: NextFunction) {
     try {
       return response.json("ok");
