@@ -5,16 +5,14 @@ import Controller from "../utils/controller.decorator";
 import { Get, Post } from "../utils/handlers.decorator";
 import { Middleware } from "../utils/middleware.decorator";
 import "reflect-metadata";
+import LogMessage from "../middlewares/logs.middleware";
 @Controller(
   "/forms",
   (req, res, next) => {
     console.log("middleware works");
     return next();
   },
-  (req, res, next) => {
-    console.log("middleware2 works");
-    return next();
-  }
+  LogMessage("test")
 )
 export default class FormsController extends BaseController {
   public testText: string | undefined;
