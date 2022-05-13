@@ -52,10 +52,6 @@ export default abstract class BaseController {
     routers.forEach(({ method, path, middlewares, handlerName }: IRouter) => {
       this.router[method](
         path,
-        (req: Request, res: Response, next: NextFunction) => {
-          console.log("method middleware");
-          next();
-        },
         middlewares ?? [],
         (this as any as { [handleName: string]: Handler })[
           String(handlerName)
