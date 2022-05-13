@@ -1,15 +1,6 @@
-import express, {
-  Application,
-  Request,
-  Response,
-  NextFunction,
-  Handler,
-  RequestHandler,
-} from "express";
+import express, { Application, Request, Response, NextFunction } from "express";
 import BaseController from "./controllers/base.Controller";
-import { IRouter } from "./utils/handlers.decorator";
 import HttpCustomError from "./utils/http-custom-error";
-import { MetadataKeys } from "./utils/metadata.keys";
 export default class App {
   public expressApp: Application;
 
@@ -53,54 +44,13 @@ export default class App {
   }
 
   initializeControllers(controllers: BaseController[]) {
-    const info: Array<{ api: string; handler: string }> = [];
     controllers.forEach((controller) => {
-      const controllerInstance: { [handleName: string]: Handler } =
-        controller as any;
-
-      const basePath: string = Reflect.getMetadata(
-        MetadataKeys.BASE_PATH,
-        controller.constructor
-      );
-
-      const middlewares: RequestHandler = Reflect.getMetadata(
-        MetadataKeys.MIDDLEWARES,
-        controller.constructor
-      );
-
-      const routers: IRouter[] = Reflect.getMetadata(
-        MetadataKeys.ROUTERS,
-        controller.constructor
-      );
-
-      routers.forEach(({ method, path, middlewares, handlerName }: IRouter) => {
-        controller.router[method](
-          path,
-          (req: Request, res: Response, next: NextFunction) => {
-            console.log("method middleware");
-            next();
-          },
-          middlewares ?? [],
-          controllerInstance[String(handlerName)].bind(controllerInstance)
-        );
-
-        info.push({
-          api: `${method.toLocaleUpperCase()} ${basePath + path}`,
-          handler: `${controller.constructor.name}.${String(handlerName)}`,
-        });
-      });
-
       this.expressApp.use(
-        basePath,
-        middlewares ??
-          function (req, res, next) {
-            return next();
-          },
+        controller.BasePath,
+        controller.Middlewares,
         controller.router
       );
     });
-
-    console.table(info);
   }
 
   public listen() {
