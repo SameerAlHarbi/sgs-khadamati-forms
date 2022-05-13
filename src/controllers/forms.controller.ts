@@ -15,22 +15,11 @@ import LogMessage from "../middlewares/logs.middleware";
   LogMessage("test")
 )
 export default class FormsController extends BaseController {
-  public testText: string | undefined;
-
   constructor() {
     super();
-    this.testText = "test";
   }
 
-  // public override getInstance(): BaseController {
-  //   return new FormsController();
-  // }
-
-  protected initializeRoutes() {
-    // this.router.get("/", this.getAllForms);
-  }
-
-  @Get("/")
+  @Get("/", LogMessage("test func middleware"))
   getAllForms(request: Request, response: Response, next: NextFunction) {
     try {
       return response.json("ok");

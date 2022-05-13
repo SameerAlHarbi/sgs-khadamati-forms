@@ -1,3 +1,4 @@
+import { RequestHandler } from "express";
 import { MetadataKeys } from "./metadata.keys";
 
 export enum Methods {
@@ -9,11 +10,12 @@ export enum Methods {
 export interface IRouter {
   method: Methods;
   path: string;
+  middlewares?: RequestHandler[];
   handlerName: string | symbol;
 }
 
 const methodDecoratorFactory = (method: Methods) => {
-  return (path: string): MethodDecorator => {
+  return (path: string, ...middlewares: RequestHandler[]): MethodDecorator => {
     return (target, propertyKey) => {
       const controllerClass = target.constructor;
       const routers: IRouter[] = Reflect.hasMetadata(
@@ -26,6 +28,7 @@ const methodDecoratorFactory = (method: Methods) => {
       routers.push({
         method,
         path,
+        middlewares,
         handlerName: propertyKey,
       });
 

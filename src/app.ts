@@ -68,18 +68,19 @@ export default class App {
         controller.constructor
       );
 
-      console.log(middlewares);
-
       const routers: IRouter[] = Reflect.getMetadata(
         MetadataKeys.ROUTERS,
         controller.constructor
       );
 
-      console.table(routers);
-
-      routers.forEach(({ method, path, handlerName }) => {
+      routers.forEach(({ method, path, middlewares, handlerName }: IRouter) => {
         controller.router[method](
           path,
+          (req: Request, res: Response, next: NextFunction) => {
+            console.log("method middleware");
+            next();
+          },
+          middlewares ?? [],
           controllerInstance[String(handlerName)].bind(controllerInstance)
         );
 
