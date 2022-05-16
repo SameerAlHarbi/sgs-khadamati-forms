@@ -1,12 +1,14 @@
 import express, { Application, Request, Response, NextFunction } from "express";
 import BaseController from "./controllers/base.Controller";
+import AppModule from "./utils/app-module.decorator";
 import HttpCustomError from "./utils/http-custom-error";
+
+@AppModule()
 export default class App {
   public expressApp: Application;
 
   constructor(controllers: BaseController[], public port: number) {
     this.expressApp = express();
-
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
   }

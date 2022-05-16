@@ -4,5 +4,6 @@ exports.MetadataKeys = void 0;
 var MetadataKeys;
 (function (MetadataKeys) {
     MetadataKeys["BASE_PATH"] = "base_path";
+    MetadataKeys["MIDDLEWARES"] = "middlewares";
     MetadataKeys["ROUTERS"] = "routers";
 })(MetadataKeys = exports.MetadataKeys || (exports.MetadataKeys = {}));

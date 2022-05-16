@@ -15,17 +15,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const base_Controller_1 = __importDefault(require("./base.Controller"));
 const controller_decorator_1 = __importDefault(require("../utils/controller.decorator"));
 const handlers_decorator_1 = require("../utils/handlers.decorator");
-require("reflect-metadata");
 let FormsController = class FormsController extends base_Controller_1.default {
     constructor() {
         super();
     }
-    initializeRoutes() {
-        // this.router.get("/", this.getAllForms);
-    }
     getAllForms(request, response, next) {
         try {
             return response.json("ok");
+        }
+        catch (error) {
+            error.httpStatusCode = 400;
+            return next(error);
+        }
+    }
+    getAllForms2(request, response, next) {
+        try {
+            return response.json("ok2");
         }
         catch (error) {
             error.httpStatusCode = 400;
@@ -39,6 +44,12 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object, Function]),
     __metadata("design:returntype", void 0)
 ], FormsController.prototype, "getAllForms", null);
+__decorate([
+    (0, handlers_decorator_1.Get)("/2"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object, Function]),
+    __metadata("design:returntype", void 0)
+], FormsController.prototype, "getAllForms2", null);
 FormsController = __decorate([
     (0, controller_decorator_1.default)("/forms"),
     __metadata("design:paramtypes", [])

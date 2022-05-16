@@ -9,7 +9,7 @@ var Methods;
     Methods["PUT"] = "put";
 })(Methods = exports.Methods || (exports.Methods = {}));
 const methodDecoratorFactory = (method) => {
-    return (path) => {
+    return (path, ...middlewares) => {
         return (target, propertyKey) => {
             const controllerClass = target.constructor;
             const routers = Reflect.hasMetadata(metadata_keys_1.MetadataKeys.ROUTERS, controllerClass)
@@ -18,6 +18,7 @@ const methodDecoratorFactory = (method) => {
             routers.push({
                 method,
                 path,
+                middlewares,
                 handlerName: propertyKey,
             });
             Reflect.defineMetadata(metadata_keys_1.MetadataKeys.ROUTERS, routers, controllerClass);
