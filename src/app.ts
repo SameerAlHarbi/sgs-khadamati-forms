@@ -3,8 +3,12 @@ import BaseController from "./controllers/base.Controller";
 import AppModule from "./utils/app-module.decorator";
 import HttpCustomError from "./utils/http-custom-error";
 
-@AppModule()
-export default class App {
+export interface IApp {
+  expressApp: Application;
+}
+
+@AppModule("test directive")
+export default class App implements IApp {
   public expressApp: Application;
 
   constructor(controllers: BaseController[], public port: number) {
@@ -21,6 +25,8 @@ export default class App {
     request.query["lang"] = request.query["lang"]
       ? (<string>request.query["lang"]).toUpperCase()
       : "A";
+
+    console.log("default language");
     return next();
   }
 

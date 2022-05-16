@@ -88,7 +88,6 @@ const decorator = function (testText: string) {
       anotherProperty = 10; //assigning class property here
       // propertyFromDecorator = "new property from decorator";
       // nameTest = "ll";
-
       constructor(...args: any[]) {
         super(...args);
         this.myProp = "test2";
